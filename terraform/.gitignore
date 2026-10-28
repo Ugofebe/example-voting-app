@@ -1,0 +1,9 @@
+# Terraform state and local files (never commit state - it can contain secrets)
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+override.tf
+override.tf.json

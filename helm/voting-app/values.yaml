@@ -1,0 +1,30 @@
+# Image registry/repository settings. The CI pipeline pushes images tagged with
+# the commit SHA; override image.tag at deploy time to roll forward/back.
+image:
+  registry: ghcr.io
+  owner: ugofebe
+  tag: latest
+  pullPolicy: IfNotPresent
+
+vote:
+  replicas: 2
+  port: 8080
+
+result:
+  replicas: 2
+  port: 8080
+
+worker:
+  replicas: 1
+
+redis:
+  image: redis:7-alpine
+  port: 6379
+
+postgres:
+  image: postgres:15-alpine
+  port: 5432
+  user: postgres
+  # For a real deployment this would come from a Secret, not a value.
+  password: postgres
+  db: postgres

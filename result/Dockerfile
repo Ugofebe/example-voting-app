@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:18.20.4-slim
 
 # add curl for healthcheck
 RUN apt-get update && \
@@ -11,15 +11,18 @@ WORKDIR /usr/local/app
 RUN npm install -g nodemon
 
 COPY package*.json ./
-
 RUN npm ci && \
  npm cache clean --force && \
  mv /usr/local/app/node_modules /node_modules
 
 COPY . .
 
-ENV PORT=80
-EXPOSE 80
+# Create an unprivileged user and own the app directory
+RUN useradd --create-home --uid 10001 appuser && \
+    chown -R appuser:appuser /usr/local/app
+USER appuser
 
+ENV PORT=8080
+EXPOSE 8080
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["node", "server.js"]
